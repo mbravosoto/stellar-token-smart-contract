@@ -116,10 +116,13 @@ This step was already done to create a new project from scratch
 
 ```
 cargo clean
+
 stellar contract build
 # This generates target/wasm32v1-none/release/token_bdb.wasm
+
 # Optimize WASM
 stellar contract optimize --wasm target/wasm32-unknown-unknown/release/token_bdb.wasm
+
 # Validate WASM
 ls -lh target/wasm32v1-none/release/token_bdb.wasm
 rustup target add wasm32v1-none
@@ -130,9 +133,11 @@ rustup target list | grep wasm32
 ### Deploy Process
 ```
 stellar contract deploy --wasm target/wasm32v1-none/release/token_bdb.wasm --source <name> --network testnet
+
 # Save CONTRACT_ID
 mkdir -p .soroban
 echo CONTRACT_ID > .soroban/token_id
+
 # Export as ENV VAR
 export TOKEN_CONTRACT_ID=$CONTRACT_ID
 ```
@@ -196,7 +201,6 @@ stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testne
 stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- allowance --from PUBLIC_KEY_NAME --spender PUBLIC_KEY_NAME2
 
 # Create third account for testing and fund it with friendbot: name2 will transfer from name to name3
-
 stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- transfer_from --spender PUBLIC_KEY_NAME2 --from PUBLIC_KEY_NAME --to PUBLIC_KEY_NAME3  --amount 250000000
 ```
 ![Allowance](img/allowance.png)
