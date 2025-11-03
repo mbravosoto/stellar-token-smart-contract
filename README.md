@@ -146,12 +146,16 @@ stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testne
 ```
 ![Invoke Deployed Smart Contract](img/invoke_contract.png)
 
-Validate Contract Parameters
 ```
+#Validate Contract Parameters
 nombre=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source-account <name> --network testnet -- name)
+
 symbol=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source-account <name> --network testnet -- symbol)
+
 decimals=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source-account <name> --network testnet -- decimals)
+
 total_supply=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source-account <name> --network testnet -- total_supply)
+
 echo "Nombre:" $nombre - "Simbolo:" $symbol - "Decimales:" $decimals - "Total supply:" $total_supply
 ```
 ![Contract Details](img/contract_details.png)
@@ -172,9 +176,12 @@ stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testne
 Create other account for testing and fund it with friendbot
 ```
 stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- transfer --from $PUBLIC_KEY_NAME --to $PUBLIC_KEY_NAME2  --amount 1000000000
+
 # Validate balance
 balance_name=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- balance --account PUBLIC_KEY)
+
 balance_name2=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- balance --account PUBLIC_KEY)
+
 echo "Balance <name>:" $balance_name - "Balance <name2>:" $balance_name2
 ```
 ![Transfer](img/transfer.png)
@@ -187,10 +194,9 @@ stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testne
 #### Allowance and Transfer From
 ```
 stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- allowance --from PUBLIC_KEY_NAME --spender PUBLIC_KEY_NAME2
-```
 
-Create third account for testing and fund it with friendbot: name2 will transfer from name to name3
-```
+# Create third account for testing and fund it with friendbot: name2 will transfer from name to name3
+
 stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- transfer_from --spender PUBLIC_KEY_NAME2 --from PUBLIC_KEY_NAME --to PUBLIC_KEY_NAME3  --amount 250000000
 ```
 ![Allowance](img/allowance.png)
@@ -210,10 +216,11 @@ stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testn
 #### Validate Events in Stellar Expert 
 ```
 echo "https://stellar.expert/explorer/testnet/contract/$TOKEN_CONTRACT_ID"
-stellar events --id $TOKEN_CONTRACT_ID --network testnet --start-ledger 1000000 --output json | jq '.'
 ```
 ![Stellar Expert Contract](img/stellar_expert_contract.png)
-
+```
+stellar events --id $TOKEN_CONTRACT_ID --network testnet --start-ledger 1000000 --output json | jq '.'
+```
 ![Stellar Expert Inovactions](img/stellar_expert_invocations.png)
 
 ## 🧠 Contract Overview
