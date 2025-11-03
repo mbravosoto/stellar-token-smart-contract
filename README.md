@@ -140,10 +140,13 @@ export TOKEN_CONTRACT_ID=$CONTRACT_ID
 
 ### Invoke Contract Process
 
-- Invoke Initialize
-`stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- initialize --admin PUBLIC_KEY --name "Buen Dia Token" --symbol "BDB" --decimals 7`
+#### Initialize
+```
+stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- initialize --admin PUBLIC_KEY --name "Buen Dia Token" --symbol "BDB" --decimals 7
+```
 ![Invoke Deployed Smart Contract](img/invoke_contract.png)
-- Validate Contract Parameters
+
+Validate Contract Parameters
 ```
 nombre=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source-account <name> --network testnet -- name)
 symbol=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source-account <name> --network testnet -- symbol)
@@ -152,13 +155,21 @@ total_supply=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source-account 
 echo "Nombre:" $nombre - "Simbolo:" $symbol - "Decimales:" $decimals - "Total supply:" $total_supply
 ```
 ![Contract Details](img/contract_details.png)
-- Mint
-`stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- mint --to PUBLIC_KEY --amount 10000000000000`
+
+#### Mint
+```
+stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- mint --to PUBLIC_KEY --amount 10000000000000
+```
 ![Mint Token](img/mint_token.png)
-- Balance
-`stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- balance --account PUBLIC_KEY`
-- Create other account for testing and fund it with friendbot
-- Transfer
+
+#### Balance
+```
+stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- balance --account PUBLIC_KEY
+```
+
+#### Transfer
+
+Create other account for testing and fund it with friendbot
 ```
 stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- transfer --from $PUBLIC_KEY_NAME --to $PUBLIC_KEY_NAME2  --amount 1000000000
 # Validate balance
@@ -167,21 +178,36 @@ balance_name2=$(stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2>
 echo "Balance <name>:" $balance_name - "Balance <name2>:" $balance_name2
 ```
 ![Transfer](img/transfer.png)
-- Approve
-`stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- approve --from PUBLIC_KEY_NAME --spender PUBLIC_KEY_NAME2 --amount 500000000`
-- Allowance
-`stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- allowance --from PUBLIC_KEY_NAME --spender PUBLIC_KEY_NAME2`
+
+#### Approve
+```
+stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- approve --from PUBLIC_KEY_NAME --spender PUBLIC_KEY_NAME2 --amount 500000000
+```
+
+#### Allowance and Transfer From
+```
+stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name> --network testnet -- allowance --from PUBLIC_KEY_NAME --spender PUBLIC_KEY_NAME2
+```
+
+Create third account for testing and fund it with friendbot: name2 will transfer from name to name3
+```
+stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- transfer_from --spender PUBLIC_KEY_NAME2 --from PUBLIC_KEY_NAME --to PUBLIC_KEY_NAME3  --amount 250000000
+```
 ![Allowance](img/allowance.png)
-- Create third account for testing and fund it with friendbot: name2 will transfer from name to name3
-- Transfer From
-`stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- transfer_from --spender PUBLIC_KEY_NAME2 --from PUBLIC_KEY_NAME --to PUBLIC_KEY_NAME3  --amount 250000000`
-- Burn tokens
-`stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- burn --from PUBLIC_KEY_NAME2 --amount 100000000`
+
+#### Burn Tokens
+```
+stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- burn --from PUBLIC_KEY_NAME2 --amount 100000000
+```
 ![Burn](img/burn.png)
-- Total Supply
-`stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- total_supply`
+
+#### Total Supply
+```
+stellar contract invoke --id $TOKEN_CONTRACT_ID --source <name2> --network testnet -- total_supply
+```
 ![Total Supply](img/total_supply.png)
-- Validate in Stellar Expert all events
+
+#### Validate Events in Stellar Expert 
 ```
 echo "https://stellar.expert/explorer/testnet/contract/$TOKEN_CONTRACT_ID"
 stellar events --id $TOKEN_CONTRACT_ID --network testnet --start-ledger 1000000 --output json | jq '.'
@@ -316,3 +342,6 @@ start tarpaulin-report.html
 - Validates error codes using `assert_eq!(result, Err(Ok(TokenError::...)))`
 - Optimizes storage by removing keys when balances or allowances reach zero
 - Emits detailed events for all state-changing operations
+
+## 🤝 Contributions
+This project was made as part of Applied Rust in Soroban Token Implementation from [Código Futura course](https://github.com/BuenDia-Builders/codigofutura/tree/main/2er-semana-aplicacion/5-Clase) organized by Buen Día Builders.
